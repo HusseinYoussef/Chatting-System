@@ -3,11 +3,11 @@ class Application < ApplicationRecord
     has_many :chats, dependent: :destroy
 
     # Validations
-    validates :name, presence: true, length: {maximum: 50}
+    validates :name, presence: true
 
     has_secure_token :token
 
     attribute :name, :string
     attribute :token, :string
-    attribute :chats_count, :integer, default: 0    
+    attribute :chats_count, :integer, default: 0
 end

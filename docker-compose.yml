@@ -30,6 +30,8 @@ services:
   cache:
     container_name: redis1
     image: redis:6.2-alpine
+    depends_on:
+      - db
     ports:
       - 6379:6379
     command: redis-server --save 20 1 --loglevel warning

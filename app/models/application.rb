@@ -1,5 +1,6 @@
 class Application < ApplicationRecord
     after_commit :create_app_chat_counter, on: :create
+    after_commit :delete_app_chat_counter, on: :destroy
 
     # Associations
     has_many :chats, dependent: :destroy
@@ -15,7 +16,15 @@ class Application < ApplicationRecord
 
     private
 
+    def app_chat_counter_key
+        self.token
+    end
+    
     def create_app_chat_counter
-        $redis.set(self.token, 0)
+        $redis.set(app_chat_counter_key, 0)
+    end
+    
+    def delete_app_chat_counter
+        $redis.del(app_chat_counter_key)
     end
 end

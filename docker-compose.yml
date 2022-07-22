@@ -7,8 +7,8 @@ services:
     image: mysql:5.7
     ports:
       - 3306:3306
-    env_file:
-      - .db.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
     volumes:
       - ./volumes/mysql_data:/var/lib/mysql
     networks:
@@ -26,7 +26,18 @@ services:
     networks:
       - db_network
 
+  # Redis
+  cache:
+    container_name: redis1
+    image: redis:6.2-alpine
+    ports:
+      - 6379:6379
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - ./volumes/cache_data:/data
+
 volumes:
   mysql_data:
+  cache_data:
 networks:
   db_network:

@@ -4,8 +4,8 @@ Rails.application.routes.draw do
   namespace 'api' do
     namespace 'v1' do
       resources :applications, param: :token, only: [:index, :show, :create, :update] do
-        resources :chats, param: :number, only: [:index, :show, :create, :update, :destroy] do
-          resources :messages, param: :number, only: [:index, :show, :create, :update]
+        resources :chats, param: :number do
+          resources :messages, param: :number
         end
         
         # Search endpoint

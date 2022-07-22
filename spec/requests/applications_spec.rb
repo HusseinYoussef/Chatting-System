@@ -71,8 +71,8 @@ RSpec.describe "Applications", type: :request do
       # blank name
       before {post '/api/v1/applications'}
       
-      it "returns status code 422" do
-        expect(response).to have_http_status(422) 
+      it "returns status code 400" do
+        expect(response).to have_http_status(400) 
       end
     end
     

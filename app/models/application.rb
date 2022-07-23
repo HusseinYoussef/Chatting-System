@@ -26,7 +26,6 @@ class Application < ApplicationRecord
 
     def create_app_chats_counter
         $redis.set(app_chats_counter_key, 0)
-        $redis.expire(app_chats_counter_key, 500)
     end
 
     def delete_app_chats_counter

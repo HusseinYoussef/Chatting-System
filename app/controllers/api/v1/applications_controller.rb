@@ -16,14 +16,24 @@ module Api
             
             # POST api/v1/applications
             def create
-                @app = Application.create!(app_params)
-                render json: {message: "success", data: @app.as_json(except: :id)}, status: :created
+                @app = Application.new(app_params)
+                if @app.invalid?
+                    render json: {errors: @app.errors.full_messages}, status: :bad_request
+                else
+                    @app.save!
+                    render json: {message: "success", data: @app.as_json(except: :id)}, status: :created
+                end
             end
             
             # PUT api/v1/applications/:token
             def update
-                @app.update!(app_params)
-                render json: {message: "success", data: @app.as_json(except: :id)}, status: :ok
+                @app.assign_attributes(app_params)
+                if @app.invalid?
+                    render json: {errors: @app.errors.full_messages}, status: :bad_request
+                else
+                    @app.save!
+                    render json: {message: "success", data: @app.as_json(except: :id)}, status: :ok
+                end
             end
             
             private

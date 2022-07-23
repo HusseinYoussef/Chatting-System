@@ -1,6 +1,6 @@
 class Chat < ApplicationRecord
-  after_commit :create_chat_msg_counter, on: :create
-  after_commit :delete_chat_msg_counter, on: :destroy
+  after_create :create_chat_messages_counter
+  after_commit :delete_chat_messages_counter, on: :destroy
 
   # Associations
   belongs_to :application
@@ -12,17 +12,22 @@ class Chat < ApplicationRecord
   attribute :number, :integer
   attribute :messages_count, :integer, default: 0
   
-  private
-
-  def chat_msg_counter_key
-    "#{self.application.token}_#{self.number}"
+  def increment_chat_messages_counter
+    $redis.incr(chat_messages_counter_key)
   end
 
-  def create_chat_msg_counter
-    $redis.set(chat_msg_counter_key, 0)
+  private
+  
+  def chat_messages_counter_key
+    "#{self.application.token}_chat#{self.number}"
+  end
+
+  def create_chat_messages_counter
+    $redis.set(chat_messages_counter_key, 0)
+    $redis.expire(chat_messages_counter_key, 500)
   end
   
-  def delete_chat_msg_counter
-    $redis.del(chat_msg_counter_key)
+  def delete_chat_messages_counter
+    $redis.del(chat_messages_counter_key)
   end
 end

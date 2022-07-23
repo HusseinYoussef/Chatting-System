@@ -1,6 +1,6 @@
 class Application < ApplicationRecord
-    after_commit :create_app_chat_counter, on: :create
-    after_commit :delete_app_chat_counter, on: :destroy
+    after_create :create_app_chats_counter
+    after_commit :delete_app_chats_counter, on: :destroy
 
     # Associations
     has_many :chats, dependent: :destroy
@@ -14,17 +14,22 @@ class Application < ApplicationRecord
     attribute :token, :string
     attribute :chats_count, :integer, default: 0
 
+    def increment_chats_count
+        $redis.incr(app_chats_counter_key)
+    end
+    
     private
 
-    def app_chat_counter_key
+    def app_chats_counter_key
         self.token
     end
-    
-    def create_app_chat_counter
-        $redis.set(app_chat_counter_key, 0)
+
+    def create_app_chats_counter
+        $redis.set(app_chats_counter_key, 0)
+        $redis.expire(app_chats_counter_key, 500)
     end
-    
-    def delete_app_chat_counter
-        $redis.del(app_chat_counter_key)
+
+    def delete_app_chats_counter
+        $redis.del(app_chats_counter_key)
     end
 end

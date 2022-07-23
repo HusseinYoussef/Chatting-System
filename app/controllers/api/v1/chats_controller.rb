@@ -18,7 +18,7 @@ module Api
             # POST /api/v1/applications/:application_token/chats
             def create
                 begin
-                    chat_number = increment_chat_count
+                    chat_number = @app.increment_chats_count
                     ChatWorker.perform_async(@app.id, chat_number)
                     render json: {message: "Chat is to be created!", chat_number: chat_number}, status: :ok
                 rescue => exception
@@ -40,10 +40,6 @@ module Api
         
             def set_chat
                 @chat = @app.chats.find_by!(number: params[:number])
-            end
-        
-            def increment_chat_count
-                $redis.incr(params[:application_token])
             end
         end
     end

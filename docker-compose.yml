@@ -39,8 +39,22 @@ services:
     volumes:
       - ./volumes/cache_data:/data
 
+  # Elastic-Search
+  es:
+    container_name: elastic1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.1
+    depends_on:
+      - db
+    environment:
+      - discovery.type=single-node
+    ports:
+      - 9200:9200
+    volumes:
+      - ./volumes/es_data:/usr/share/elasticsearch/data
+
 volumes:
   mysql_data:
   cache_data:
+  es_data:
 networks:
   db_network:

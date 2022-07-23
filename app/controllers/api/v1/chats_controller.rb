@@ -2,7 +2,7 @@ module Api
     module V1
         class ChatsController < ApplicationController
             before_action :set_app
-            before_action :set_chat, only: [:show, :update, :destroy]
+            before_action :set_chat, except: [:index, :create]
         
             # GET /api/v1/applications/:application_token/chats
             def index
@@ -32,6 +32,20 @@ module Api
                 render status: :no_content
             end
         
+            # POST /api/v1/applications/:application_token/chats/:number/search
+            def search
+                if params[:query].nil? or params[:query].empty?
+                    render json: {message: "Query can't be empty"}, status: :bad_request
+                else
+                    begin
+                        results = Message.search(@chat.id, params[:query]).map { |result| result["_source"] }
+                        render json: {message: "success", number_of_messages: results.size, data: results}, status: :ok
+                    rescue => exception
+                        render json: {message: exception.message}, status: :bad_request
+                    end
+                end
+            end
+
             private
         
             def set_app

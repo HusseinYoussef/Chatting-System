@@ -1,6 +1,3 @@
+redis_url = ENV.fetch('REDIS_URL', 'redis://localhost:6379/0')
 
-$redis = Redis.new(
-    url: ENV['REDIS_URL'],
-    port: ENV['REDIS_PORT'],
-    db: ENV['REDIS_DB']
-)
+$redis = Redis.new(url: redis_url)

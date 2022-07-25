@@ -6,10 +6,10 @@ Rails.application.routes.draw do
       resources :applications, param: :token, only: [:index, :show, :create, :update] do
         resources :chats, param: :number do
           resources :messages, param: :number
+
+          # Search endpoint
+          post '/messages/search' => 'messages#search'
         end
-        
-        # Search endpoint
-        post '/chats/:number/search' => 'chats#search'
       end
     end
   end

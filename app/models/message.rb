@@ -2,7 +2,7 @@ require 'elasticsearch/model'
 
 class Message < ApplicationRecord
   # Associations
-  belongs_to :chat, dependent: :destroy
+  belongs_to :chat, counter_cache: true
 
   # Validations
   validates :body, presence: true
@@ -41,7 +41,7 @@ class Message < ApplicationRecord
               },{ 
                 match: {
                   body: {
-                    query: query,
+                    query: "*#{query}*",
                     fuzziness: "AUTO"
                   }
                 } 

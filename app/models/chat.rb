@@ -3,7 +3,7 @@ class Chat < ApplicationRecord
   after_commit :delete_chat_messages_counter, on: :destroy
 
   # Associations
-  belongs_to :application
+  belongs_to :application, counter_cache: true
   has_many :messages, dependent: :destroy
   
   # Validations

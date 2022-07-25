@@ -3,7 +3,7 @@ class Chat < ApplicationRecord
   after_commit :delete_chat_messages_counter, on: :destroy
 
   # Associations
-  belongs_to :application, counter_cache: true
+  belongs_to :application, optional: true
   has_many :messages, dependent: :destroy
   
   # Validations
@@ -20,7 +20,7 @@ class Chat < ApplicationRecord
   private
   
   def chat_messages_counter_key
-    "#{self.application.token}_chat#{self.number}"
+    "#{self.application_token}_chat#{self.number}"
   end
 
   def create_chat_messages_counter

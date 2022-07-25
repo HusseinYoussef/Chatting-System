@@ -2,7 +2,7 @@ require 'elasticsearch/model'
 
 class Message < ApplicationRecord
   # Associations
-  belongs_to :chat, counter_cache: true
+  belongs_to :chat
 
   # Validations
   validates :body, presence: true

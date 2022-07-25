@@ -4,15 +4,18 @@ module Api
             before_action :set_chat
             before_action :set_message, only: [:show, :update, :destroy]
 
+            # GET /api/v1/applications/:application_token/chats/:chat_number/messages
             def index
                 @messages = @chat.messages
                 render json: {message: "success", data: @messages.as_json(except: [:id, :chat_id])}, status: :ok
             end
-
+            
+            # GET /api/v1/applications/:application_token/chats/:chat_number/messages/:number
             def show
                 render json: {message: "success", data: @message.as_json(except: [:id, :chat_id])}, status: :ok
             end
             
+            # POST /api/v1/applications/:application_token/chats/:chat_number/messages
             def create
                 msg = Message.new(message_params)
                 msg.chat_id = @chat.id
@@ -29,6 +32,7 @@ module Api
                 end
             end
             
+            # PUT /api/v1/applications/:application_token/chats/:chat_number/messages/:number
             def update
                 @message.assign_attributes(message_params)
                 if msg.invalid?
@@ -39,11 +43,13 @@ module Api
                 end
             end
             
+            # DELETE /api/v1/applications/:application_token/chats/:chat_number/messages/:number
             def destroy
                 @message.destroy
                 render status: :no_content
             end
             
+            # POST /api/v1/applications/:application_token/chats/:chat_number/messages/search
             def search
                 if params[:query].nil? or params[:query].empty?
                     render json: {message: "Query can't be empty"}, status: :bad_request

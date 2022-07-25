@@ -44,6 +44,19 @@ module Api
                 render status: :no_content
             end
             
+            def search
+                if params[:query].nil? or params[:query].empty?
+                    render json: {message: "Query can't be empty"}, status: :bad_request
+                else
+                    begin
+                        results = Message.search(@chat.id, params[:query]).map { |result| result["_source"] }
+                        render json: {message: "success", number_of_messages: results.size, data: results}, status: :ok
+                    rescue => exception
+                        render json: {message: exception.message}, status: :bad_request
+                    end
+                end
+            end
+
             private
 
             def message_params

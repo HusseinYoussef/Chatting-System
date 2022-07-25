@@ -25,10 +25,8 @@ ActiveRecord::Schema.define(version: 20220725054008) do
     t.integer  "number",                        null: false
     t.string   "application_token",             null: false
     t.integer  "messages_count",    default: 0, null: false
-    t.integer  "application_id",                null: false
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
-    t.index ["application_id"], name: "fk_rails_3b5054ba3a", using: :btree
     t.index ["application_token", "number"], name: "index_chats_on_application_token_and_number", unique: true, using: :btree
   end
 
@@ -41,7 +39,6 @@ ActiveRecord::Schema.define(version: 20220725054008) do
     t.index ["chat_id", "number"], name: "index_messages_on_chat_id_and_number", unique: true, using: :btree
   end
 
-  add_foreign_key "chats", "applications", column: "application_token", primary_key: "token"
-  add_foreign_key "chats", "applications", on_delete: :cascade
+  add_foreign_key "chats", "applications", column: "application_token", primary_key: "token", on_delete: :cascade
   add_foreign_key "messages", "chats", on_delete: :cascade
 end

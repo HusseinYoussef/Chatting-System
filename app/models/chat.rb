@@ -10,6 +10,7 @@ class Chat < ApplicationRecord
   validates :number, presence: true
   
   attribute :number, :integer
+  attribute :application_token, :string
   attribute :messages_count, :integer, default: 0
   
   def increment_chat_messages_counter

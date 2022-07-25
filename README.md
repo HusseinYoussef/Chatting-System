@@ -1,24 +1,13 @@
-# README
+# Chat System
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a chatting system that allow users to create Applications and receive application_token that uniquely identify the application so it can be used later to create chats and messages within that application.
 
-Things you may want to cover:
+## Stack
+* Ruby 2.6.10
+* Rails 5.0.7
+* Mysql 5.7
+* Redis 6.2
+* Elastic Search 7.17
+* Sidekiq 6.5.1
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## System Design

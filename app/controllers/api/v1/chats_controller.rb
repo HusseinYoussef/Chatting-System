@@ -1,7 +1,7 @@
 module Api
     module V1
         class ChatsController < ApplicationController
-            before_action :set_app
+            before_action :set_app, only: [:index, :create]
             before_action :set_chat, except: [:index, :create]
         
             # GET /api/v1/applications/:application_token/chats
@@ -19,7 +19,7 @@ module Api
             def create
                 begin
                     chat_number = @app.increment_chats_count
-                    ChatWorker.perform_async(@app.id, chat_number)
+                    ChatWorker.perform_async(@app.id, @app.token, chat_number)
                     render json: {message: "Chat is to be created!", chat_number: chat_number}, status: :ok
                 rescue => exception
                     render json: {message: exception.message}, status: :bad_request
@@ -53,7 +53,7 @@ module Api
             end
         
             def set_chat
-                @chat = @app.chats.find_by!(number: params[:number])
+                @chat = Chat.find_by!(application_token: params[:application_token], number: params[:number])
             end
         end
     end

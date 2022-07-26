@@ -28,6 +28,7 @@ type Application struct {
 
 type Chat struct {
 	ID    int `json:"chat_id"`
+	ApplicationToken string `json:"application_token"`
 	Number int `json:"number"`
 }
 
@@ -106,7 +107,7 @@ func ChatsHandler(response http.ResponseWriter, req *http.Request) {
 	chat_number := redisClient.Incr(app.Token).Val()
 	log.Printf("Chat number: %d", chat_number)
 
-    task, err := tasks.NewChatCreationTask(app.ID, int(chat_number))
+    task, err := tasks.NewChatCreationTask(app.Token, int(chat_number))
     if err != nil {
         log.Fatalf("could not create task: %v", err)
     }
@@ -137,17 +138,8 @@ func MessagesHandler(response http.ResponseWriter, req *http.Request) {
 		return
 	}
 	
-	var app Application
-	results := database.Connector.First(&app, "token = ?", params["application_token"])
-
-	if results.RowsAffected == 0 {
-		response.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(response).Encode(map[string]string{"message": "Couldn't find Application"})
-		return
-	}
-	
 	var chat Chat
-	results = database.Connector.First(&chat, "application_id = ? AND number = ?", app.ID, params["chat_number"])
+	results := database.Connector.First(&chat, "application_token = ? AND number = ?", params["application_token"], params["chat_number"])
 	
 	if results.RowsAffected == 0 {
 		response.WriteHeader(http.StatusNotFound)
@@ -156,7 +148,7 @@ func MessagesHandler(response http.ResponseWriter, req *http.Request) {
 	}
 
 	// ENQUEUE TASK
-	redisKey := fmt.Sprintf("%s_chat%d", app.Token, chat.Number)
+	redisKey := fmt.Sprintf("%s_chat%d", chat.ApplicationToken, chat.Number)
 	log.Printf("Message creation: %s", redisKey)
 	message_number := redisClient.Incr(redisKey).Val()
 	task, err := tasks.NewMessageCreationTask(chat.ID, int(message_number), msg.Body)

@@ -12,7 +12,7 @@ const (
 )
 
 type ChatPayload struct {
-    ApplicationID int
+    ApplicationToken string
     Number int
 }
 
@@ -22,9 +22,9 @@ type MessagePayload struct {
     Body string
 }
 
-func NewChatCreationTask(application_id int, number int)  (*asynq.Task, error) {
+func NewChatCreationTask(application_token string, number int)  (*asynq.Task, error) {
     
-    payload, err := json.Marshal(ChatPayload{ApplicationID: application_id, Number: number})
+    payload, err := json.Marshal(ChatPayload{ApplicationToken: application_token, Number: number})
     if err != nil {
         return nil, err
     }

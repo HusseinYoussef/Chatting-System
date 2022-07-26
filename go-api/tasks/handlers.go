@@ -18,7 +18,7 @@ func HandleChatCreationTask(c context.Context, t *asynq.Task) error {
     }
 
     database.Connector.Create(chat)
-    log.Printf("Chat Creating Task: application_id=%d, chat_number=%d", chat.ApplicationID, chat.Number)
+    log.Printf("Chat Creating Task: application_token=%s, chat_number=%d", chat.ApplicationToken, chat.Number)
     
     return nil
 }

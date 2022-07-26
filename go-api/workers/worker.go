@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"go-api/config"
 	"go-api/tasks"
 
 	"github.com/hibiken/asynq"
@@ -11,8 +12,8 @@ import (
 func main() {
     // Create and configuring Redis connection.
     redisConnection := asynq.RedisClientOpt{
-        Addr: "localhost:6379", // Redis server address
-		DB: 0,
+        Addr: config.RedisUrl, // Redis server address
+		DB: config.RedisDB,
     }
 
     // Create and configuring Asynq worker server.

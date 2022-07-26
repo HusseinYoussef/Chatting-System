@@ -5,13 +5,3 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-
-for i in 1..2 do
-    app = Application.create(name: Faker::Lorem.word)
-    for j in 1..2 do
-        chat = app.chats.create(number: j)
-        for k in 1..3 do
-            chat.messages.create(number: k, body: Faker::Quotes::Shakespeare.hamlet_quote)
-        end
-    end
-end

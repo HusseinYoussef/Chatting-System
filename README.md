@@ -114,8 +114,8 @@ I used Elastic Search for partial-text matching and fuzzy  matching for typo-tol
 ....
 match: {
     body: {
-    query: "*#{query}*",
-    fuzziness: "AUTO"
+        query: "*#{query}*",
+        fuzziness: "AUTO"
     }
 }
 ...

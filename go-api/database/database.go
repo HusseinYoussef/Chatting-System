@@ -14,7 +14,7 @@ var connectorOnce sync.Once
 var Connector *gorm.DB
 
 func GetConnectionString() string {
-	connectionString := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&collation=utf8mb4_unicode_ci&parseTime=true&multiStatements=true", config.User, config.Password, config.ServerName, config.DB)
+	connectionString := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&collation=utf8mb4_unicode_ci&parseTime=true&multiStatements=true", config.User, config.Password, config.HOST, config.DB)
 	return connectionString
 }
 

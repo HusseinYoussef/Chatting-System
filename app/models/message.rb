@@ -5,6 +5,7 @@ class Message < ApplicationRecord
   belongs_to :chat
 
   # Validations
+  validates :number, presence: true
   validates :body, presence: true
   
   attribute :number, :integer

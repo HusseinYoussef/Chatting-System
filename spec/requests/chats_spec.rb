@@ -4,8 +4,8 @@ RSpec.describe "Chats", type: :request do
 
   let!(:app_with_chats) { create(:application, chats_count: 2) }
   let!(:app_with_no_chats) { create(:application, chats_count: 0) }
-  let!(:chat1) { create(:chat, application_id: app_with_chats.id, number: 1) }
-  let!(:chat2) { create(:chat, application_id: app_with_chats.id, number: 2) }
+  let!(:chat1) { create(:chat, application_token: app_with_chats.token, number: 1) }
+  let!(:chat2) { create(:chat, application_token: app_with_chats.token, number: 2) }
   
   # Test suite for GET /api/v1/applications/:application_token/chats
   describe "GET /api/v1/applications/:application_token/chats" do
@@ -85,7 +85,7 @@ RSpec.describe "Chats", type: :request do
 
   # Test suite for DELETE /api/v1/applications/:application:token/chats/:number
   describe "DELETE /api/v1/applications/:application_token/chats/:number" do
-    let(:chat_number) { app_with_chats.chats.first.number }
+    let(:chat_number) { chat1.number }
 
     context "when the record is found" do
       before {delete "/api/v1/applications/#{app_with_chats.token}/chats/#{chat_number}"}

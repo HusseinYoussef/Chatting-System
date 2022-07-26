@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe "Messages", type: :request do
   
   let!(:app_with_chats) { create(:application, chats_count: 2) }
-  let!(:chat) { create(:chat, application_id: app_with_chats.id, number: 1, messages_count: 2) }
-  let!(:empty_chat) { create(:chat, application_id: app_with_chats.id, number: 2, messages_count: 0) }
+  let!(:chat) { create(:chat, application_token: app_with_chats.token, number: 1, messages_count: 2) }
+  let!(:empty_chat) { create(:chat, application_token: app_with_chats.token, number: 2, messages_count: 0) }
   let!(:message1) { create(:message, chat_id: chat.id, number: 1) }
   let!(:message2) { create(:message, chat_id: chat.id, number: 2) }
 
@@ -110,8 +110,8 @@ RSpec.describe "Messages", type: :request do
       # empty body
       before {put "/api/v1/applications/#{app_with_chats.token}/chats/#{chat.number}/messages/#{message1.number}", params: {body: ""}}
       
-      it "returns status code 422" do
-        expect(response).to have_http_status(422) 
+      it "returns status code 400 bad_request" do
+        expect(response).to have_http_status(400) 
       end
     end
   end

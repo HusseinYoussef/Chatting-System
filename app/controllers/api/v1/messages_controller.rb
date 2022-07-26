@@ -19,6 +19,7 @@ module Api
             def create
                 msg = Message.new(message_params)
                 msg.chat_id = @chat.id
+                msg.number = 0 # tmp value
                 if msg.invalid?
                     render json: {errors: msg.errors.full_messages}, status: :bad_request
                 else
@@ -35,10 +36,10 @@ module Api
             # PUT /api/v1/applications/:application_token/chats/:chat_number/messages/:number
             def update
                 @message.assign_attributes(message_params)
-                if msg.invalid?
-                    render json: {errors: msg.errors.full_messages}, status: :bad_request
+                if @message.invalid?
+                    render json: {errors: @message.errors.full_messages}, status: :bad_request
                 else
-                    msg.save!
+                    @message.save!
                     render json: {message: "success", data: @message.as_json(except: [:id, :chat_id])}, status: :ok
                 end
             end

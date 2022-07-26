@@ -15,26 +15,10 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql" // Required for MySQL dialect, _ import a package solely for its side-effects (initialization),
 
 	"github.com/go-redis/redis"
-
 	"github.com/gorilla/mux"
 	"github.com/hibiken/asynq"
 )
 
-type Application struct {
-	ID    int `json:"id"`
-	Token string `json:"token"`
-	Name  string `json:"name"`
-}
-
-type Chat struct {
-	ID    int `json:"chat_id"`
-	ApplicationToken string `json:"application_token"`
-	Number int `json:"number"`
-}
-
-type Message struct{
-	Body string `json:"body"`
-}
 
 var redisClientOnce sync.Once
 var asyncClientOnce sync.Once
@@ -94,7 +78,7 @@ func ChatsHandler(response http.ResponseWriter, req *http.Request) {
 	params := mux.Vars(req)
 	response.Header().Set("Content-Type", "application/json")
 	
-	var app Application
+	var app database.Application
 	results := database.Connector.First(&app, "token = ?", params["application_token"])
 	
 	if results.RowsAffected == 0 {
@@ -129,7 +113,7 @@ func MessagesHandler(response http.ResponseWriter, req *http.Request) {
 	params := mux.Vars(req)
 	response.Header().Set("Content-Type", "application/json")
 
-	var msg Message
+	var msg database.Message
 	_ = json.NewDecoder(req.Body).Decode(&msg)
 
 	if len(msg.Body) == 0 {
@@ -138,7 +122,7 @@ func MessagesHandler(response http.ResponseWriter, req *http.Request) {
 		return
 	}
 	
-	var chat Chat
+	var chat database.Chat
 	results := database.Connector.First(&chat, "application_token = ? AND number = ?", params["application_token"], params["chat_number"])
 	
 	if results.RowsAffected == 0 {

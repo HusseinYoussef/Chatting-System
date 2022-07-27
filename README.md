@@ -1,14 +1,29 @@
 # Chat System
 
-This is a chatting system that allow users to create Applications and receive application_token that uniquely identify the application so it can be used later to create chats and messages within that application.
+This is a chatting system that allows users to create Applications and receive application_token that uniquely identify the application so it can be used later to create chats and messages within that application. It also supports retrievals, updates and searching messages.
 
 ## Stack
 * Ruby 2.6.10
 * Rails 5.0.7
+* Go 1.18.4
 * Mysql 5.7
 * Redis 6.2
 * Elastic Search 7.17.1
-* Sidekiq 6.5.1
+* Docker 20.10.14
+
+## Running the system
+* You must have **Docker** installed.
+
+* Clone the repo.
+
+* Dockerized version
+    
+    * Run `docker-compose up`
+* Locally
+
+    * Run `docker-compose up -f docker-compose.Dev.yml`
+    * Start rails server using `rails s`
+    * Start go server using `go run api.go` within go-api directory
 
 ## System Design
 ![system design](figures/system_design.png)
@@ -96,17 +111,20 @@ Since concurrent requests are allowed, this can lead to race conditions that mig
 
     * Solution: Creating a thread-safe counter using **Redis**. Since **Redis** is single-threaded, which is how every command is guaranteed to be atomic. While one command is executing, no other command will run.
 
-* **Resources that have connection pools**: The Go app has access to mysql DB and redis which use connection pools. If the application has many goroutines, it wouldn't make sense to create a new connection object, in fact this might cause connection pool exhaustion.
+* **Resources that have connection pools**: The Go app has access to mysql DB and redis which use connection pools. If the application has many Go routines, it wouldn't make sense to create a new connection object, in fact this might cause connection pool exhaustion.
     * Solution: Make the connection objects **Singleton**
     using **sync** package.
 
 ## Queuing System
-*   I used **Sidekiq** for background-tasks processing for Rails API. It is responsible for:
+* I opted to use **Redis** to store the queues containing jobs to be processed later asynchronously.
+
+* I used **Sidekiq** workers for background-tasks processing in Rails API. It is responsible for:
     
+    * Pulling jobs from the corresponding queue in Redis.
     * Processing chats and messages creation jobs.
     * Scheduling tasks for updating chats and messages counters using **cron-jobs** that run periodically.
 
-* I have also used Asynq in Go API which is very similar to Sidekiq for chats and messages creation background-tasks.
+* I have also used **Asynq** in Go API which is very similar to Sidekiq for chats and messages creation background-tasks.
 
 ## Elastic Search
 I used Elastic Search for partial-text matching and fuzzy  matching for typo-tolerence.

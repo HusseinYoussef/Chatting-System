@@ -63,14 +63,16 @@ services:
       - rails_backend
       - go_backend
 
-  # Sidekiq Worker
-  sidekiq_worker:
-    container_name: sidekiq_worker1
+  # rails Worker
+  rails_worker:
+    container_name: rails_worker1
+    restart: always
     build: .
     command: bundle exec sidekiq
     volumes:
       - .:/app
     environment:
+      - DB_HOST=db
       - REDIS_URL=redis://cache:6379/0
       - ELASTICSEARCH_URL=http://elasticsearch:9200
     depends_on:
@@ -83,8 +85,9 @@ services:
   # Rails API
   rails_api:
     container_name: rails_api1
+    restart: always
     build: .
-    command: rails s -p 3000 -b '0.0.0.0'
+    command: bash -c "rails db:create && rails db:migrate && rails s -p 3000 -b '0.0.0.0'"
     ports:
       - 3000:3000
     volumes:
@@ -97,17 +100,16 @@ services:
       - db
       - cache
       - elasticsearch
-      - sidekiq_worker
+      - rails_worker
     networks:
-      - db_network
       - rails_backend
 
   # Go Worker
   go-worker:
     container_name: go-worker1
+    restart: always
     build: ./go-api
     command: /worker
-    restart: always
     volumes:
       - .:/app
     depends_on:
@@ -124,9 +126,9 @@ services:
   # Go API
   go-api:
     container_name: go-api1
+    restart: always
     build: ./go-api
     command: /api
-    restart: always
     ports:
       - 8000:8000
     volumes:

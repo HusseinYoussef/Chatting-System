@@ -49,7 +49,7 @@ services:
 
   # Elastic-Search
   elasticsearch:
-    container_name: elastic1
+    container_name: elasticsearch1
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.1
     depends_on:
       - db
@@ -61,49 +61,71 @@ services:
       - ./volumes/es_data:/usr/share/elasticsearch/data
     networks:
       - rails_backend
+      - go_backend
 
-  # # Sidekiq Worker
-  # sidekiq_worker:
-  #   container_name: sidekiq_worker1
-  #   build: .
-  #   command: bundle exec sidekiq
-  #   volumes:
-  #     - .:/app
-  #   environment:
-  #     - REDIS_URL=redis://cache:6379/0
-  #     - ELASTICSEARCH_URL=http://elasticsearch:9200
-  #   depends_on:
-  #     - db
-  #     - cache
-  #     - elasticsearch
-  #   networks:
-  #     - rails_backend
+  # Sidekiq Worker
+  sidekiq_worker:
+    container_name: sidekiq_worker1
+    build: .
+    command: bundle exec sidekiq
+    volumes:
+      - .:/app
+    environment:
+      - REDIS_URL=redis://cache:6379/0
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    depends_on:
+      - db
+      - cache
+      - elasticsearch
+    networks:
+      - rails_backend
 
-  # # Rails API
-  # rails_api:
-  #   container_name: rails_api1
-  #   build: .
-  #   command: rails s -p 3000 -b '0.0.0.0'
-  #   ports:
-  #     - 3000:3000
-  #   volumes:
-  #     - .:/app
-  #   environment:
-  #     - DB_HOST=db
-  #     - REDIS_URL=redis://cache:6379/0
-  #     - ELASTICSEARCH_URL=http://elasticsearch:9200
-  #   depends_on:
-  #     - db
-  #     - cache
-  #     - elasticsearch
-  #     - sidekiq_worker
-  #   networks:
-  #     - db_network
-  #     - rails_backend
+  # Rails API
+  rails_api:
+    container_name: rails_api1
+    build: .
+    command: rails s -p 3000 -b '0.0.0.0'
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
+    environment:
+      - DB_HOST=db
+      - REDIS_URL=redis://cache:6379/0
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    depends_on:
+      - db
+      - cache
+      - elasticsearch
+      - sidekiq_worker
+    networks:
+      - db_network
+      - rails_backend
 
+  # Go Worker
+  go-worker:
+    container_name: go-worker1
+    build: ./go-api
+    command: /worker
+    restart: always
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - cache
+      - elasticsearch
+    environment:
+      - HOST=mysql1:3306
+      - RedisUrl=redis1:6379
+      - ElasticSearchUrl=http://elasticsearch1:9200
+    networks:
+      - go_backend
+
+  # Go API
   go-api:
     container_name: go-api1
     build: ./go-api
+    command: /api
     restart: always
     ports:
       - 8000:8000
@@ -112,11 +134,13 @@ services:
     depends_on:
       - db
       - cache
+      - go-worker
     environment:
       - HOST=mysql1:3306
       - RedisUrl=redis1:6379
     networks:
       - go_backend
+
 
 volumes:
   mysql_data:

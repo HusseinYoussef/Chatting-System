@@ -63,14 +63,16 @@ services:
       - rails_backend
       - go_backend
 
-  # Sidekiq Worker
-  sidekiq_worker:
-    container_name: sidekiq_worker1
+  # rails Worker
+  rails_worker:
+    container_name: rails_worker1
+    restart: always
     build: .
     command: bundle exec sidekiq
     volumes:
       - .:/app
     environment:
+      - DB_HOST=db
       - REDIS_URL=redis://cache:6379/0
       - ELASTICSEARCH_URL=http://elasticsearch:9200
     depends_on:
@@ -83,9 +85,9 @@ services:
   # Go Worker
   go-worker:
     container_name: go-worker1
+    restart: always
     build: ./go-api
     command: /worker
-    restart: always
     volumes:
       - .:/app
     depends_on:
@@ -98,6 +100,7 @@ services:
       - ElasticSearchUrl=http://elasticsearch1:9200
     networks:
       - go_backend
+
 
 volumes:
   mysql_data:

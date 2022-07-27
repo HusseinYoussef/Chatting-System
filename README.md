@@ -86,9 +86,12 @@ The database consists of 3 tables/models: Applications, Chats, and Messages.
     GET /api/v1/applications/:application_token/chats
 #### Retrieve a certain chat within a certain application
     GET /api/v1/applications/:application_token/chats/:number
-#### Create a chat for a certain application (Available in GO API)
+#### Create a chat for a certain application (Available in both Rail API and GO API )
 
     POST /api/v1/applications/:application_token/chats
+#### Delete a chat for a certain application
+
+    DELETE /api/v1/applications/:application_token/chats/:number
 
 ### Messages
 
@@ -96,7 +99,7 @@ The database consists of 3 tables/models: Applications, Chats, and Messages.
     GET /api/v1/applications/:application_token/chats/:chat_number/messages
 #### Retrieve a certain message of a certain chat
     GET /api/v1/applications/:application_token/chats/:chat_number/message/:number
-#### Create a message for a certain chat (Available in GO API)
+#### Create a message for a certain chat (Available in both Rail API and GO API )
 *Note*: a request body containing 'body' field is expected.
 
     POST /api/v1/applications/:application_token/chats/:chat_number/message
@@ -104,6 +107,9 @@ The database consists of 3 tables/models: Applications, Chats, and Messages.
 *Note*: a request body containing 'body' field should exist.
 
     PUT /api/v1/applications/:application_token/chats/:chat_number/message/:number
+#### Delete a message for a certain chat
+
+    DELETE /api/v1/applications/:application_token/chats/:chat_number/message/:number
 #### Search for messages within a certain chat
 *Note*: a request body containing 'query' field is expected.
 

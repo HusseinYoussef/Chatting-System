@@ -8,11 +8,10 @@ import (
 	"go-api/database"
 	"log"
 	"strconv"
-	"strings"
 	"time"
 
-	"github.com/elastic/go-elasticsearch/esapi"
-	"github.com/elastic/go-elasticsearch/v8"
+	"github.com/olivere/elastic/v7"
+
 	"github.com/hibiken/asynq"
 	"gorm.io/datatypes"
 )
@@ -72,35 +71,39 @@ func HandleMessageCreationTask(c context.Context, t *asynq.Task) error {
     log.Printf("Message Creating Task: chat_id=%d, message_number=%d, body=%s", message.ChatId, message.Number, message.Body)
 
     InsertIntoElasticSearchIndex(message)
-    
-    log.Printf("Done Inserting into Elastic Search Index")
 
     return nil
 }
 
-func InsertIntoElasticSearchIndex(message database.Message) {
-    cfg := elasticsearch.Config{
-        Addresses: []string{
-            config.ElasticSearchUrl,
-        },
-    }
+func InsertIntoElasticSearchIndex(message database.Message){
 
-    // Instantiate a new Elasticsearch client object instance
-    client, err := elasticsearch.NewClient(cfg)
-    if err != nil {
-        fmt.Println("Elasticsearch connection error:", err)
-    }
+    esclient, err :=  elastic.NewClient(elastic.SetURL(config.ElasticSearchUrl),
+    elastic.SetSniff(false),
+    elastic.SetHealthcheck(false))
 
-	payload, _ := json.Marshal(map[string]interface{}{
-									"number": message.Number,
-									"body": message.Body,
-									"chat_id": message.ChatId,
-                                })
-	
-	request := esapi.IndexRequest{Index: "messages", DocumentID: strconv.Itoa(message.ID), Body: strings.NewReader(string(payload))}
-	res, err := request.Do(context.Background(), client)
     if err != nil {
-        log.Fatalf("IndexRequest ERROR: %s", err)
+		fmt.Println("Error initializing : ", err)
+		panic("Client fail ")
+	} else {
+        fmt.Println("ES initialized...")
     }
-    defer res.Body.Close()
+    
+	es_payload, _ := json.Marshal(map[string]interface{}{
+        "number": message.Number,
+        "body": message.Body,
+        "chat_id": message.ChatId,
+    })
+
+	data := string(es_payload)
+	ind, err := esclient.Index().
+		Index("messages").
+        Id(strconv.Itoa(message.ID)).
+		BodyJson(data).
+		Do(context.Background())
+
+    if err != nil {
+		panic(err)
+	}
+
+    log.Printf("Done Inserting into Elastic Search Index, Result: %s", ind.Result)
 }

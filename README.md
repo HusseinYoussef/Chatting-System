@@ -100,22 +100,22 @@ The database consists of 3 tables/models: Applications, Chats, and Messages.
 #### Retrieve all messages of a certain chat
     GET /api/v1/applications/:application_token/chats/:chat_number/messages
 #### Retrieve a certain message of a certain chat
-    GET /api/v1/applications/:application_token/chats/:chat_number/message/:number
+    GET /api/v1/applications/:application_token/chats/:chat_number/messages/:number
 #### Create a message for a certain chat (Available in both Rail API and GO API )
 *Note*: a request body containing 'body' field is expected.
 
-    POST /api/v1/applications/:application_token/chats/:chat_number/message
+    POST /api/v1/applications/:application_token/chats/:chat_number/messages
 #### Update a message for a certain chat
 *Note*: a request body containing 'body' field should exist.
 
-    PUT /api/v1/applications/:application_token/chats/:chat_number/message/:number
+    PUT /api/v1/applications/:application_token/chats/:chat_number/messages/:number
 #### Delete a message for a certain chat
 
-    DELETE /api/v1/applications/:application_token/chats/:chat_number/message/:number
+    DELETE /api/v1/applications/:application_token/chats/:chat_number/messages/:number
 #### Search for messages within a certain chat
 *Note*: a request body containing 'query' field is expected.
 
-    POST /api/v1/applications/:application_token/chats/:chat_number/message/search
+    POST /api/v1/applications/:application_token/chats/:chat_number/messages/search
 
 ## Race Conditions and Concurrency Control
 Since concurrent requests are allowed, this can lead to race conditions that might violate the app constraints.

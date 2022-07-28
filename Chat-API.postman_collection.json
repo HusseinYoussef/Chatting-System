@@ -1,0 +1,358 @@
+{
+	"info": {
+		"_postman_id": "a30556aa-184a-445e-9b96-158bca9ffba0",
+		"name": "Chat-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21660329"
+	},
+	"item": [
+		{
+			"name": "All Applications",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/applications",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"applications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Application",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"app1\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/applications",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"applications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Application",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/applications/tASwi1is6Tt7TNjDtCtSkNvV",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"applications",
+						"tASwi1is6Tt7TNjDtCtSkNvV"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Application",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"new app name\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/applications/tASwi1is6Tt7TNjDtCtSkNvV",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"applications",
+						"tASwi1is6Tt7TNjDtCtSkNvV"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All Chats",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/applications/tASwi1is6Tt7TNjDtCtSkNvV/chats",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"applications",
+						"tASwi1is6Tt7TNjDtCtSkNvV",
+						"chats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Chat",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/applications/tASwi1is6Tt7TNjDtCtSkNvV/chats",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"applications",
+						"tASwi1is6Tt7TNjDtCtSkNvV",
+						"chats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Chat",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/applications/tASwi1is6Tt7TNjDtCtSkNvV/chats/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"applications",
+						"tASwi1is6Tt7TNjDtCtSkNvV",
+						"chats",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Chat",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/applications/tASwi1is6Tt7TNjDtCtSkNvV/chats/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"applications",
+						"tASwi1is6Tt7TNjDtCtSkNvV",
+						"chats",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All Messages",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/applications/tASwi1is6Tt7TNjDtCtSkNvV/chats/1/messages",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"applications",
+						"tASwi1is6Tt7TNjDtCtSkNvV",
+						"chats",
+						"1",
+						"messages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Message",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"body\": \"first message\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/applications/tASwi1is6Tt7TNjDtCtSkNvV/chats/1/messages",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"applications",
+						"tASwi1is6Tt7TNjDtCtSkNvV",
+						"chats",
+						"1",
+						"messages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Message",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/applications/tASwi1is6Tt7TNjDtCtSkNvV/chats/1/messages/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"applications",
+						"tASwi1is6Tt7TNjDtCtSkNvV",
+						"chats",
+						"1",
+						"messages",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Message",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"body\": \"new message body\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/applications/tASwi1is6Tt7TNjDtCtSkNvV/chats/1/messages/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"applications",
+						"tASwi1is6Tt7TNjDtCtSkNvV",
+						"chats",
+						"1",
+						"messages",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Message",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/applications/tASwi1is6Tt7TNjDtCtSkNvV/chats/1/messages/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"applications",
+						"tASwi1is6Tt7TNjDtCtSkNvV",
+						"chats",
+						"1",
+						"messages",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

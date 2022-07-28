@@ -88,7 +88,7 @@ The database consists of 3 tables/models: Applications, Chats, and Messages.
     GET /api/v1/applications/:application_token/chats
 #### Retrieve a certain chat within a certain application
     GET /api/v1/applications/:application_token/chats/:number
-#### Create a chat for a certain application (Available in both Rail API and GO API )
+#### Create a chat for a certain application (Available in both Rails API and GO API )
 
     POST /api/v1/applications/:application_token/chats
 #### Delete a chat for a certain application
@@ -101,7 +101,7 @@ The database consists of 3 tables/models: Applications, Chats, and Messages.
     GET /api/v1/applications/:application_token/chats/:chat_number/messages
 #### Retrieve a certain message of a certain chat
     GET /api/v1/applications/:application_token/chats/:chat_number/messages/:number
-#### Create a message for a certain chat (Available in both Rail API and GO API )
+#### Create a message for a certain chat (Available in both Rails API and GO API )
 *Note*: a request body containing 'body' field is expected.
 
     POST /api/v1/applications/:application_token/chats/:chat_number/messages
@@ -156,7 +156,7 @@ I used **Rspec** to write the code specs for controllers and models. They can be
 
 In case you want to run the tests locally:
 
-1- Run `docker-compose -f .\docker-compose.Test.yml up -d`
+1- Run `docker-compose -f docker-compose.Test.yml up -d`
 
 2- create test-database `rails db:create`
 

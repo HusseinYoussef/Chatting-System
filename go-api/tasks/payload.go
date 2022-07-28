@@ -39,6 +39,5 @@ func NewMessageCreationTask(chat_id int, number int, body string)  (*asynq.Task,
         return nil, err
     }
 
-    // Return a new task with given type and payload.
     return asynq.NewTask(TypeMessageCreation, payload), nil
 }

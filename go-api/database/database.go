@@ -34,7 +34,6 @@ type Message struct{
 	UpdatedAt datatypes.Date
 }
 
-//Connector variable used for CRUD operation's
 // var connectorOnce sync.Once
 var Connector *gorm.DB
 
@@ -43,7 +42,6 @@ func GetConnectionString() string {
 	return connectionString
 }
 
-//Connect creates MySQL connection
 func Connect(connectionString string) error {
 	var err error
 

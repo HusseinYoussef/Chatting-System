@@ -353,6 +353,42 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Search",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"query\": \"first\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/v1/applications/b6b8dGDz4SoHcpkE4nj7EfxJ/chats/1/messages/search",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"applications",
+						"b6b8dGDz4SoHcpkE4nj7EfxJ",
+						"chats",
+						"1",
+						"messages",
+						"search"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

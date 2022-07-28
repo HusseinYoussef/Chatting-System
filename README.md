@@ -16,12 +16,14 @@ This is a chatting system that allows users to create Applications and receive a
 
 * Clone the repo.
 
-* Dockerized version
+* Dockerized version (Recommended)
     
-    * Run `docker-compose up`
+    * Run `docker-compose up -d`
 * Locally
 
-    * Run `docker-compose up -f docker-compose.Dev.yml`
+    * Run `docker-compose -f docker-compose.Dev.yml up -d`
+    * Create the database using `rails db:create`
+    * Apply the database migrations using `rails db:migrate`
     * Start rails server using `rails s`
     * Start go server using `go run api.go` within go-api directory
 
@@ -150,6 +152,20 @@ match: {
 ...
 ```
 ## Specs
-I used **Rspec** to write the code specs for controllers and models. They can be found under 'spec' folder.
+I used **Rspec** to write the code specs for controllers and models. They can be found under 'spec' folder (total of 45 tests).
+
+In case you want to run the tests locally:
+
+1- Run `docker-compose -f .\docker-compose.Test.yml up -d`
+
+2- create test-database `rails db:create`
+
+3- Apply migrations to test-database `rails db:migrate RAILS_ENV=test`
+
+4- Run `bundle exec rspec`
+
+![specs](figures/specs.png)
+
 ## TODOs
 * Build API Gateway to sit between the client and the backend APIs.
+* Write Tests for GO API.

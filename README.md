@@ -58,7 +58,7 @@ The database consists of 3 tables/models: Applications, Chats, and Messages.
         1- Retrieving all messages of a certain chat using only **chat_id**.
 
         2- Retrieving a certain message using both **chat_id and message_number**.
-
+-----
 ## Endpoints
 ***Note***: Kindly note that there is no API Gateway for the time being so you will have to send your requests to either one of the backend APIs directly.
     
@@ -67,6 +67,7 @@ The database consists of 3 tables/models: Applications, Chats, and Messages.
 
 ***Note***: I opted to implement API versioning to further extend the learning experience.
 
+## Rails API Endpoints
 ### Applications
 
 #### Retrieve all applications
@@ -88,7 +89,7 @@ The database consists of 3 tables/models: Applications, Chats, and Messages.
     GET /api/v1/applications/:application_token/chats
 #### Retrieve a certain chat within a certain application
     GET /api/v1/applications/:application_token/chats/:number
-#### Create a chat for a certain application (Available in both Rails API and GO API )
+#### Create a chat for a certain application
 
     POST /api/v1/applications/:application_token/chats
 #### Delete a chat for a certain application
@@ -101,7 +102,7 @@ The database consists of 3 tables/models: Applications, Chats, and Messages.
     GET /api/v1/applications/:application_token/chats/:chat_number/messages
 #### Retrieve a certain message of a certain chat
     GET /api/v1/applications/:application_token/chats/:chat_number/messages/:number
-#### Create a message for a certain chat (Available in both Rails API and GO API )
+#### Create a message for a certain chat
 *Note*: a request body containing 'body' field is expected.
 
     POST /api/v1/applications/:application_token/chats/:chat_number/messages
@@ -116,6 +117,21 @@ The database consists of 3 tables/models: Applications, Chats, and Messages.
 *Note*: a request body containing 'query' field is expected.
 
     POST /api/v1/applications/:application_token/chats/:chat_number/messages/search
+
+## GO API Endpoints
+### Chats
+
+#### Create a chat for a certain application
+
+    POST /api/v1/applications/:application_token/chats
+
+### Messages
+#### Create a message for a certain chat
+*Note*: a request body containing 'body' field is expected.
+
+    POST /api/v1/applications/:application_token/chats/:chat_number/messages
+
+------
 
 ## Race Conditions and Concurrency Control
 Since concurrent requests are allowed, this can lead to race conditions that might violate the app constraints.
